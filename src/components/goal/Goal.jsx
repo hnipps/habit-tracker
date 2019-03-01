@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { Button } from '../button/Button';
 
 export const Goal = ({ text, dueDate }) => {
   return (
@@ -7,8 +8,8 @@ export const Goal = ({ text, dueDate }) => {
         {text} - {dueDate}
       </p>
       <div>
-        <button className="mr2">Edit</button>
-        <button>Delete</button>
+        <Button className="mr2 bg-light-gray">Edit</Button>
+        <Button className="bg-dark-red">Delete</Button>
       </div>
     </div>
   );
