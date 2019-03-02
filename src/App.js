@@ -5,10 +5,12 @@ import { GoalList } from './components/goal-list/GoalList';
 
 class App extends Component {
   render() {
+    console.log(process.env.REACT_APP_HEIGHT);
+    
     return (
       <>
         <header className="h2 ph2 pv2 bg-light-gray helvetica">Track your goals</header>
-        <div className="pa2">
+        <div className="app pa2">
           <GoalList>
             <Goal text="Climb Everest" dueDate="09/19/2019" />
             <Goal text="Swim with sharks" dueDate="01/01/2020" />
