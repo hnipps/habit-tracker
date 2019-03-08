@@ -1,5 +1,1 @@
 @import './css/tachyons.min.css';
-
-.app-header {
-  font-size: env(--heading-1-font-size);
-}
