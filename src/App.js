@@ -3,14 +3,18 @@ import './App.css';
 import { Goal } from './components/goal/Goal';
 import { GoalList } from './components/goal-list/GoalList';
 
+import { environmentVariables } from './css-env-variables';
+
 class App extends Component {
   render() {
-    console.log(process.env.REACT_APP_HEIGHT);
-    
+    console.log(environmentVariables);
+
     return (
       <>
-        <header className="h2 ph2 pv2 bg-light-gray helvetica">Track your goals</header>
-        <div className="app pa2">
+        <header className="app-header h2 ph2 pv2 bg-light-gray helvetica">
+          Track your goals
+        </header>
+        <div className="pa2">
           <GoalList>
             <Goal text="Climb Everest" dueDate="09/19/2019" />
             <Goal text="Swim with sharks" dueDate="01/01/2020" />

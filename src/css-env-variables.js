@@ -1,5 +1,5 @@
 module.exports = {
   environmentVariables: {
-    '--app-height': '100px'
+    '--heading-1-font-size': '24px'
   }
 };

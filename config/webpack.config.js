@@ -97,7 +97,7 @@ module.exports = function(webpackEnv) {
               },
               stage: 3
             }),
-            postcssEnvFunction({ importFrom: 'config/css-env-variables.js' })
+            postcssEnvFunction({ importFrom: 'src/css-env-variables.js' })
           ],
           sourceMap: isEnvProduction ? shouldUseSourceMap : isEnvDevelopment
         }
