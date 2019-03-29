@@ -3,7 +3,6 @@ import './App.css';
 import { Goal } from './components/goal/Goal';
 import { GoalList } from './components/goal-list/GoalList';
 
-import { environmentVariables } from './css-env-variables';
 import { Button } from './components/button/Button';
 
 const goals = [
@@ -37,18 +36,21 @@ class App extends Component {
   addNewGoal = () => {
     const { goals: currGoals } = this.state;
     const newId = currGoals.length;
-    const newGoals = [
-      ...currGoals,
-      { id: newId, text: '', dueDate: '' }
-    ];
+    const newGoals = [...currGoals, { id: newId, text: '', dueDate: '' }];
+    this.setState({
+      goals: [...newGoals]
+    });
+  };
+
+  deleteGoal = goalId => () => {
+    const { goals: currGoals } = this.state;
+    const newGoals = currGoals.filter(goal => goal.id !== goalId);
     this.setState({
       goals: [...newGoals]
     });
   };
 
   render() {
-    console.log(environmentVariables);
-
     return (
       <>
         <header className="app-header h2 ph2 pv2 bg-light-gray helvetica">
@@ -61,6 +63,7 @@ class App extends Component {
               <Goal
                 id={`goal-${i}`}
                 onEdit={this.handleGoalEdit(id)}
+                onDelete={this.deleteGoal(id)}
                 {...props}
               />
             ))}

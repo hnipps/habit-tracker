@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Button } from '../button/Button';
 import { TextField } from '../text-field/TextField';
 
-export const Goal = ({ text, dueDate, onEdit, id }) => {
+export const Goal = ({ text, dueDate, onEdit, onDelete, id }) => {
   const [edit, setEdit] = React.useState(false);
   const toggleEdit = () => {
     setEdit(!edit);
@@ -41,7 +41,9 @@ export const Goal = ({ text, dueDate, onEdit, id }) => {
       )}
       <div>
         {!edit && editButton}
-        <Button className="bg-dark-red">Delete</Button>
+        <Button className="bg-dark-red" onClick={onDelete}>
+          Delete
+        </Button>
       </div>
     </div>
   );
