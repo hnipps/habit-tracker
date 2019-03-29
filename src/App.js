@@ -4,6 +4,7 @@ import { Goal } from './components/goal/Goal';
 import { GoalList } from './components/goal-list/GoalList';
 
 import { environmentVariables } from './css-env-variables';
+import { Button } from './components/button/Button';
 
 const goals = [
   { id: '1', text: 'Climb Everest', dueDate: '09/19/2019' },
@@ -33,6 +34,18 @@ class App extends Component {
     });
   };
 
+  addNewGoal = () => {
+    const { goals: currGoals } = this.state;
+    const newId = currGoals.length;
+    const newGoals = [
+      ...currGoals,
+      { id: newId, text: '', dueDate: '' }
+    ];
+    this.setState({
+      goals: [...newGoals]
+    });
+  };
+
   render() {
     console.log(environmentVariables);
 
@@ -40,14 +53,15 @@ class App extends Component {
       <>
         <header className="app-header h2 ph2 pv2 bg-light-gray helvetica">
           Track your goals
+          <Button onClick={this.addNewGoal}>New Goal</Button>
         </header>
         <div className="pa2">
           <GoalList>
-            {this.state.goals.map((goal, i) => (
+            {this.state.goals.map(({ id, ...props }, i) => (
               <Goal
                 id={`goal-${i}`}
-                goal={goal}
-                onEdit={this.handleGoalEdit(goal.id)}
+                onEdit={this.handleGoalEdit(id)}
+                {...props}
               />
             ))}
           </GoalList>

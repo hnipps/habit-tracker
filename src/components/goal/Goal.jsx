@@ -2,12 +2,12 @@ import * as React from 'react';
 import { Button } from '../button/Button';
 import { TextField } from '../text-field/TextField';
 
-export const Goal = ({ goal, onEdit, id }) => {
-  const { text, dueDate } = goal;
+export const Goal = ({ text, dueDate, onEdit, id }) => {
   const [edit, setEdit] = React.useState(false);
   const toggleEdit = () => {
     setEdit(!edit);
   };
+
   const formId = `${id}-form`;
 
   const editButton = (
