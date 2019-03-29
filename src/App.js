@@ -19,12 +19,12 @@ class App extends Component {
     };
   }
 
-  handleGoalEdit = goalId => event => {
+  handleGoalEdit = goalId => key => event => {
     const { goals: currGoals } = this.state;
     const currIndex = currGoals.findIndex(goal => goal.id === goalId);
     const oldGoal = currGoals[currIndex];
     const newGoals = [...currGoals].fill(
-      { ...oldGoal, text: event.target.value },
+      { ...oldGoal, [key]: event.target.value },
       currIndex,
       currIndex + 1
     );

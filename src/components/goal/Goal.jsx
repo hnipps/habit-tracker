@@ -29,8 +29,8 @@ export const Goal = ({ goal, onEdit, id }) => {
       {edit ? (
         <>
           <div className="di">
-            <TextField value={text} onChange={onEdit} />
-            <TextField value={dueDate} />
+            <TextField value={text} onChange={onEdit('text')} />
+            <TextField value={dueDate} onChange={onEdit('dueDate')} />
           </div>
           {saveButton}
         </>
