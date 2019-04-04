@@ -23,6 +23,9 @@ export const Goal = ({ text, dueDate, onEdit, onDelete, id }) => {
     </Button>
   );
 
+  if (!dueDate) {
+    dueDate = new Date();
+  }
   return (
     <div
       id={id}
