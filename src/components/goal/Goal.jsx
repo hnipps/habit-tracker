@@ -37,7 +37,6 @@ export const Goal = ({ text, dueDate, onEdit, onDelete, id }) => {
             />
             <DatePicker selected={dueDate} onChange={onEdit('dueDate')} />
           </div>
-          {saveButton}
         </>
       ) : (
         <p className="mv0 mr3 di">
@@ -45,7 +44,7 @@ export const Goal = ({ text, dueDate, onEdit, onDelete, id }) => {
         </p>
       )}
       <div>
-        {!edit && editButton}
+        {(!edit && editButton) || saveButton}
         <Button className="bg-dark-red" onClick={onDelete}>
           Delete
         </Button>
