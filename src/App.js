@@ -6,9 +6,9 @@ import { GoalList } from './components/goal-list/GoalList';
 import { Button } from './components/button/Button';
 
 const goals = [
-  { id: '1', text: 'Climb Everest', dueDate: '09/19/2019' },
-  { id: '2', text: 'Swim with sharks', dueDate: '01/01/2020' },
-  { id: '3', text: 'Learn to juggle', dueDate: '07/21/2019' }
+  { id: '1', text: 'Climb Everest', dueDate: new Date(2019, 8, 19) },
+  { id: '2', text: 'Swim with sharks', dueDate: new Date(2020, 0, 1) },
+  { id: '3', text: 'Learn to juggle', dueDate: new Date(2019, 6, 21) }
 ];
 
 class App extends Component {
@@ -19,12 +19,15 @@ class App extends Component {
     };
   }
 
-  handleGoalEdit = goalId => key => event => {
+  handleGoalEdit = goalId => (key, modifierCallback) => returnedValue => {
     const { goals: currGoals } = this.state;
     const currIndex = currGoals.findIndex(goal => goal.id === goalId);
     const oldGoal = currGoals[currIndex];
+    const modifiedValue = modifierCallback
+      ? modifierCallback(returnedValue)
+      : returnedValue;
     const newGoals = [...currGoals].fill(
-      { ...oldGoal, [key]: event.target.value },
+      { ...oldGoal, [key]: modifiedValue },
       currIndex,
       currIndex + 1
     );
@@ -61,6 +64,7 @@ class App extends Component {
           <GoalList>
             {this.state.goals.map(({ id, ...props }, i) => (
               <Goal
+                key={i}
                 id={`goal-${i}`}
                 onEdit={this.handleGoalEdit(id)}
                 onDelete={this.deleteGoal(id)}

@@ -1,14 +1,16 @@
 import * as React from 'react';
+import DatePicker from 'react-datepicker';
+
 import { Button } from '../button/Button';
 import { TextField } from '../text-field/TextField';
+
+import 'react-datepicker/dist/react-datepicker.css';
 
 export const Goal = ({ text, dueDate, onEdit, onDelete, id }) => {
   const [edit, setEdit] = React.useState(false);
   const toggleEdit = () => {
     setEdit(!edit);
   };
-
-  const formId = `${id}-form`;
 
   const editButton = (
     <Button type="button" className="mr2 bg-light-gray" onClick={toggleEdit}>
@@ -29,14 +31,17 @@ export const Goal = ({ text, dueDate, onEdit, onDelete, id }) => {
       {edit ? (
         <>
           <div className="di">
-            <TextField value={text} onChange={onEdit('text')} />
-            <TextField value={dueDate} onChange={onEdit('dueDate')} />
+            <TextField
+              value={text}
+              onChange={onEdit('text', event => event.target.value)}
+            />
+            <DatePicker selected={dueDate} onChange={onEdit('dueDate')} />
           </div>
           {saveButton}
         </>
       ) : (
         <p className="mv0 mr3 di">
-          {text} - {dueDate}
+          {text} - {dueDate.toDateString()}
         </p>
       )}
       <div>
