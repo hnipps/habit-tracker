@@ -5,10 +5,27 @@ import { GoalList } from './components/goal-list/GoalList';
 
 import { Button } from './components/button/Button';
 
+import { GoalMonitor } from './services/GoalMonitor';
+
 const goals = [
-  { id: '1', text: 'Climb Everest', dueDate: new Date(2019, 8, 19) },
-  { id: '2', text: 'Swim with sharks', dueDate: new Date(2020, 0, 1) },
-  { id: '3', text: 'Learn to juggle', dueDate: new Date(2019, 6, 21) }
+  {
+    id: '1',
+    text: 'Climb Everest',
+    dueDate: new Date(2019, 8, 19),
+    lastUpdated: new Date()
+  },
+  {
+    id: '2',
+    text: 'Swim with sharks',
+    dueDate: new Date(2020, 0, 1),
+    lastUpdated: new Date()
+  },
+  {
+    id: '3',
+    text: 'Learn to juggle',
+    dueDate: new Date(2019, 6, 21),
+    lastUpdated: new Date()
+  }
 ];
 
 class App extends Component {
@@ -17,6 +34,7 @@ class App extends Component {
     this.state = {
       goals
     };
+    new GoalMonitor(this.state.goals, 1000);
   }
 
   handleGoalEdit = goalId => (key, modifierCallback) => returnedValue => {
@@ -27,7 +45,7 @@ class App extends Component {
       ? modifierCallback(returnedValue)
       : returnedValue;
     const newGoals = [...currGoals].fill(
-      { ...oldGoal, [key]: modifiedValue },
+      { ...oldGoal, [key]: modifiedValue, lastUpdated: new Date() },
       currIndex,
       currIndex + 1
     );
@@ -39,7 +57,10 @@ class App extends Component {
   addNewGoal = () => {
     const { goals: currGoals } = this.state;
     const newId = currGoals.length;
-    const newGoals = [...currGoals, { id: newId, text: '', dueDate: '' }];
+    const newGoals = [
+      ...currGoals,
+      { id: newId, text: '', dueDate: '', lastUpdated: new Date() }
+    ];
     this.setState({
       goals: [...newGoals]
     });
