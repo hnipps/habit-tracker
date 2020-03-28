@@ -6,13 +6,14 @@ import { GoalList } from './components/goal-list/GoalList';
 import { Button } from './components/button/Button';
 
 import { GoalMonitor } from './services/GoalMonitor';
+import { Dialog } from './components/dialog/Dialog';
 
 const goals = [
   {
     id: '1',
     text: 'Climb Everest',
     dueDate: new Date(2019, 8, 19),
-    lastUpdated: new Date()
+    lastUpdated: new Date(2019, 1, 1)
   },
   {
     id: '2',
@@ -29,13 +30,27 @@ const goals = [
 ];
 
 class App extends Component {
+  goalMonitor;
+
   constructor(props) {
     super(props);
     this.state = {
-      goals
+      goals,
+      showDialog: undefined
     };
-    new GoalMonitor(this.state.goals, 1000);
+    this.goalMonitor = new GoalMonitor(this.state.goals, 3600000);
+    this.goalMonitor.alertUserSource$.subscribe(id => {
+      console.log('check', id);
+      this.showDialog(id);
+    });
   }
+
+  updateGoalMonitor = newGoals => this.goalMonitor.setGoalList(newGoals);
+
+  findGoal = id => {
+    const { goals } = this.state;
+    return goals.find(goal => goal.id === id);
+  };
 
   handleGoalEdit = goalId => (key, modifierCallback) => returnedValue => {
     const { goals: currGoals } = this.state;
@@ -52,6 +67,7 @@ class App extends Component {
     this.setState({
       goals: [...newGoals]
     });
+    this.updateGoalMonitor(newGoals);
   };
 
   addNewGoal = () => {
@@ -64,6 +80,7 @@ class App extends Component {
     this.setState({
       goals: [...newGoals]
     });
+    this.updateGoalMonitor(newGoals);
   };
 
   deleteGoal = goalId => () => {
@@ -72,9 +89,36 @@ class App extends Component {
     this.setState({
       goals: [...newGoals]
     });
+    this.updateGoalMonitor(newGoals);
   };
 
+  resetGoalTimer = id => () => {
+    const { goals: currGoals } = this.state;
+    const currIndex = currGoals.findIndex(goal => goal.id === id);
+    const oldGoal = currGoals[currIndex];
+    const newGoals = [...currGoals].fill(
+      { ...oldGoal, lastUpdated: new Date() },
+      currIndex,
+      currIndex + 1
+    );
+    this.setState({
+      goals: [...newGoals]
+    });
+    this.updateGoalMonitor(newGoals);
+  };
+
+  showDialog = id =>
+    this.setState(prevState => ({ ...prevState, showDialog: id }));
+
+  closeDialog = () =>
+    this.setState(prevState => ({ ...prevState, showDialog: undefined }));
+
   render() {
+    const { showDialog } = this.state;
+    let goal;
+    if (showDialog) {
+      goal = this.findGoal(showDialog);
+    }
     return (
       <>
         <header className="app-header h2 ph2 pv2 bg-light-gray helvetica">
@@ -94,6 +138,31 @@ class App extends Component {
             ))}
           </GoalList>
         </div>
+        {showDialog && (
+          <Dialog>
+            <p>Do you still care about this goal?</p>
+            <p>{goal.text}</p>
+            <div>
+              <Button
+                className="mr2"
+                onClick={() => {
+                  this.resetGoalTimer(goal.id);
+                  this.closeDialog();
+                }}
+              >
+                Keep
+              </Button>
+              <Button
+                onClick={() => {
+                  this.deleteGoal(goal.id);
+                  this.closeDialog();
+                }}
+              >
+                Delete
+              </Button>
+            </div>
+          </Dialog>
+        )}
       </>
     );
   }
